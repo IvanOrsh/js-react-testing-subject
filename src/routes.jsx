@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         element: <ActorDetailPage />,
       },
       {
-        path: "profile",
+        path: "profile/:id",
         element: <ProfilePage />,
       },
     ],
