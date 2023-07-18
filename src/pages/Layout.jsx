@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 import { makeStyles } from "tss-react/mui";
 
-import NavBar from "../components/NavBar/NavBar";
+import { NavBar } from "../components";
 
 const useStyles = makeStyles()(() => ({
   root: {
