@@ -104,7 +104,7 @@ const NavBar = () => {
             </>
           ) : (
             <Drawer
-              className={{ paper: classes.drawerPaper }}
+              classes={{ paper: classes.drawerPaper }}
               variant="permanent"
               open
             >
