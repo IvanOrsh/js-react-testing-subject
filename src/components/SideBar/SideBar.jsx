@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 
 import { useGetGenresQuery } from "../../services/TMDB";
+import genreIcons from "../../assets/genres";
 import useStyles from "./styles";
 
 const categories = [
@@ -39,8 +40,6 @@ const SideBar = ({ setMobileOpen }) => {
   const { classes } = useStyles();
   const { data, isFetching } = useGetGenresQuery();
 
-  console.log(data);
-
   return (
     <>
       <Link to="/" className={classes.imageLink}>
@@ -57,7 +56,11 @@ const SideBar = ({ setMobileOpen }) => {
           <Link key={value} className={classes.links} to="/">
             <ListItemButton onClick={() => {}}>
               <ListItemIcon>
-                <img className={classes.genreImages} height={30} />
+                <img
+                  src={genreIcons[label.toLowerCase()]}
+                  className={classes.genreImages}
+                  height={30}
+                />
               </ListItemIcon>
               <ListItemText primary={label} />
             </ListItemButton>
@@ -76,7 +79,11 @@ const SideBar = ({ setMobileOpen }) => {
             <Link key={id} className={classes.links} to="/">
               <ListItemButton onClick={() => {}}>
                 <ListItemIcon>
-                  <img className={classes.genreImages} height={30} />
+                  <img
+                    src={genreIcons[name.toLowerCase()]}
+                    className={classes.genreImages}
+                    height={30}
+                  />
                 </ListItemIcon>
                 <ListItemText primary={name} />
               </ListItemButton>
