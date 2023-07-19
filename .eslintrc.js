@@ -20,6 +20,7 @@ module.exports = {
   },
   extends: ["plugin:react/recommended", "airbnb", "prettier"],
   rules: {
+    "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
     "import/extensions": 0,
     "react/prop-types": 0,
     "linebreak-style": 0,
