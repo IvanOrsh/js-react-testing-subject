@@ -2,12 +2,11 @@ import { createBrowserRouter } from "react-router-dom";
 
 import {
   Layout,
-  ActorDetailPage,
-  ErrorPage,
-  HomePage,
-  MovieDetailPage,
   MoviesPage,
+  MovieDetailPage,
+  ActorDetailPage,
   ProfilePage,
+  ErrorPage,
 } from "./pages";
 
 const router = createBrowserRouter([
@@ -18,10 +17,6 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
-      },
-      {
-        path: "movies",
         element: <MoviesPage />,
       },
       {
