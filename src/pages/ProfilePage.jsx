@@ -1,50 +1,37 @@
 import { useSelector } from "react-redux";
-
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Typography, Button, Box } from "@mui/material";
+import { ExitToApp } from "@mui/icons-material";
 
 import { userSelector } from "../features/auth";
 
 const ProfilePage = () => {
   const { user } = useSelector(userSelector);
+  const favoriteMovies = [];
 
-  const { username, name } = user;
+  const logout = () => {
+    localStorage.clear();
+
+    window.location.href = "/";
+  };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            {username?.slice(0, 2)}
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={username}
-        subheader={name || "anon"}
-      />
-      <CardMedia
-        component="img"
-        height="400"
-        image="https://images.unsplash.com/photo-1634926878768-2a5b3c42f139?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1056&q=80"
-        alt={username}
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          Placeholder for some bio or selected / watched / ... moves?
+    <Box>
+      <Box display="flex" justifyContent="space-between">
+        <Typography variant="h4" gutterBottom>
+          {user.username}&#39;s Profile
         </Typography>
-      </CardContent>
-    </Card>
+        <Button color="inherit" onClick={logout}>
+          Logout &nbsp; <ExitToApp />
+        </Button>
+      </Box>
+      {!favoriteMovies.length ? (
+        <Typography variant="h5">
+          Add some movies to favorites or watchlist to see them here!
+        </Typography>
+      ) : (
+        <Box>FAVORITE MOVIES</Box>
+      )}
+    </Box>
   );
 };
 
