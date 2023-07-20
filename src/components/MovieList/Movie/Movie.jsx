@@ -16,7 +16,7 @@ const Movie = ({ movie, i }) => {
             src={
               movie.poster_path
                 ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                : "https://www.loremflickr.com/200/300"
+                : "http://via.placeholder.com/200x300"
             }
           />
           <Typography className={classes.title} variant="h5">

@@ -116,26 +116,21 @@ const NavBar = () => {
       <div>
         <nav className={classes.drawer}>
           {isMobile ? (
-            <>
-              <div>Just something</div>
-              <Drawer
-                variant="temporary"
-                anchor="right"
-                s
-                open={mobileOpen}
-                onClose={() =>
-                  setMobileOpen((prevMobileOpen) => !prevMobileOpen)
-                }
-                classes={{
-                  paper: classes.drawerPaper,
-                }}
-                ModalProps={{
-                  keepMounted: true,
-                }}
-              >
-                <SideBar setMobileOpen={setMobileOpen} />
-              </Drawer>
-            </>
+            <Drawer
+              variant="temporary"
+              anchor="right"
+              s
+              open={mobileOpen}
+              onClose={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              ModalProps={{
+                keepMounted: true,
+              }}
+            >
+              <SideBar setMobileOpen={setMobileOpen} />
+            </Drawer>
           ) : (
             <Drawer
               classes={{ paper: classes.drawerPaper }}
