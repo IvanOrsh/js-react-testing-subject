@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const tmdbApiKey = import.meta.env.VITE_APP_TMDB_KEY;
+const tmdbAccessToken = import.meta.env.VITE_APP_TMDB_ACCESS_TOKEN;
 
 // `https://api.themoviedb.org/3/movie/popular?api_key=${tmdbApiKey}&language=en-US&page=1`;
 
@@ -49,8 +50,22 @@ export const tmdbApi = createApi({
       query: (id) =>
         `movie/${id}?append_to_response=videos,credits&api_key=${tmdbApiKey}`,
     }),
+
+    // get user specific list
+    getRecommendations: builder.query({
+      query: (movieId) => ({
+        url: `movie/${movieId}/recommendations`,
+        headers: {
+          Authorization: `Bearer ${tmdbAccessToken}`,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetMoviesQuery, useGetGenresQuery, useGetMovieQuery } =
-  tmdbApi;
+export const {
+  useGetMoviesQuery,
+  useGetGenresQuery,
+  useGetMovieQuery,
+  useGetRecommendationsQuery,
+} = tmdbApi;
