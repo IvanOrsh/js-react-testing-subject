@@ -1,12 +1,9 @@
 import {
-  Modal,
   Typography,
   Button,
-  ButtonGroup,
   Grid,
   Box,
   CircularProgress,
-  useMediaQuery,
   Rating,
 } from "@mui/material";
 import {
@@ -20,11 +17,11 @@ import {
   ArrowBack,
 } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import { useDispatch } from "react-redux";
 
-import { useGetMovieQuery } from "../services/TMDB";
+import { useGetMovieQuery, useGetRecommendationsQuery } from "../services/TMDB";
 import { selectGenreOrCategory } from "../features/currentGenreOrCategory";
+import { MovieList } from "../components";
 import genreIcons from "../assets/genres";
 import useStyles from "./MovieDetailPage.styles";
 
@@ -39,12 +36,12 @@ const MovieDetailPage = () => {
   const isMovieWatchlisted = false;
 
   const { data, isFetching, error } = useGetMovieQuery(id);
-
-  console.log(data);
+  const { data: recommendations, isFetching: isRecommendationsFetching } =
+    useGetRecommendationsQuery(id);
 
   const dispatch = useDispatch();
 
-  if (isFetching) {
+  if (isFetching || isRecommendationsFetching) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center">
         <CircularProgress size="8rem" />
@@ -233,6 +230,18 @@ const MovieDetailPage = () => {
             Back
           </Typography>
         </Button>
+      </Box>
+
+      {/* Recommendations */}
+      <Box marginTop="5rem" width="100%">
+        <Typography variant="h4" gutterBottom align="center">
+          You might also like
+        </Typography>
+        {recommendations ? (
+          <MovieList movies={recommendations} numberOfMovies={12} />
+        ) : (
+          <Box>Sorry, nothing was found</Box>
+        )}
       </Box>
     </>
   );

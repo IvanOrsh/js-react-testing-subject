@@ -43,7 +43,7 @@ const MoviesPage = () => {
 
   return (
     <div>
-      <MovieList movies={data} />
+      <MovieList movies={data} numberOfMovies={20} />
     </div>
   );
 };
