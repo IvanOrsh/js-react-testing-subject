@@ -11,11 +11,12 @@ const Search = () => {
   const dispatch = useDispatch();
   const { classes } = useStyles();
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       dispatch(searchMovie(query));
-      useNavigate("/");
+      navigate("/");
     }
   };
 
