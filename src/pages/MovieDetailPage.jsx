@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Typography,
   Button,
@@ -5,6 +6,7 @@ import {
   Box,
   CircularProgress,
   Rating,
+  Modal,
 } from "@mui/material";
 import {
   Movie as MovieIcon,
@@ -28,6 +30,9 @@ import useStyles from "./MovieDetailPage.styles";
 const MovieDetailPage = () => {
   const { id } = useParams();
   const { classes } = useStyles();
+
+  // modal trailer
+  const [open, setOpen] = useState(false);
 
   const addToFavorites = () => {};
   const addToWatchlist = () => {};
@@ -194,7 +199,7 @@ const MovieDetailPage = () => {
         </Button>
         <Button
           variant="outlined"
-          onClick={() => {}}
+          onClick={() => setOpen(true)}
           href="#"
           endIcon={<Theaters />}
         >
@@ -243,6 +248,29 @@ const MovieDetailPage = () => {
           <Box>Sorry, nothing was found</Box>
         )}
       </Box>
+
+      {/* Trailer Modal */}
+      <Modal
+        closeAfterTransition
+        className={classes.modal}
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        {data?.videos?.results && (
+          <iframe
+            autoPlay
+            className={classes.videos}
+            frameBorder="0"
+            title="Trailer"
+            src={
+              data.videos.results.length > 0
+                ? `https://www.youtube.com/embed/${data.videos.results[0].key}`
+                : "https://www.youtube.com"
+            }
+            allow="autoplay"
+          />
+        )}
+      </Modal>
     </>
   );
 };
