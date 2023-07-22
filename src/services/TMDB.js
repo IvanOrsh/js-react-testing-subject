@@ -51,6 +51,16 @@ export const tmdbApi = createApi({
         `movie/${id}?append_to_response=videos,credits&api_key=${tmdbApiKey}`,
     }),
 
+    // favorites & watchlisted
+    getList: builder.query({
+      query: ({ listName, accountId, page }) => ({
+        url: `/account/${accountId}/${listName}?page=${page}`,
+        headers: {
+          Authorization: `Bearer ${tmdbAccessToken}`,
+        },
+      }),
+    }),
+
     // get user specific list
     getRecommendations: builder.query({
       query: (movieId) => ({
@@ -101,4 +111,5 @@ export const {
   useGetActorQuery,
   useGetMoviesByActorQuery,
   useGetMoviesByActorAltQuery,
+  useGetListQuery,
 } = tmdbApi;

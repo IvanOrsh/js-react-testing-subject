@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Typography,
   Button,
@@ -19,15 +19,25 @@ import {
   ArrowBack,
 } from "@mui/icons-material";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
-import { useGetMovieQuery, useGetRecommendationsQuery } from "../services/TMDB";
+import {
+  useGetMovieQuery,
+  useGetRecommendationsQuery,
+  useGetListQuery,
+} from "../services/TMDB";
 import { selectGenreOrCategory } from "../features/currentGenreOrCategory";
 import { MovieList, ErrorGoBack } from "../components";
 import genreIcons from "../assets/genres";
 import useStyles from "./MovieDetailPage.styles";
+import { userSelector } from "../features/auth";
+
+const tmdbAccessToken = import.meta.env.VITE_APP_TMDB_ACCESS_TOKEN;
 
 const MovieDetailPage = () => {
+  const dispatch = useDispatch();
+  const { user } = useSelector(userSelector);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -36,19 +46,92 @@ const MovieDetailPage = () => {
   // modal trailer
   const [open, setOpen] = useState(false);
 
-  const addToFavorites = () => {};
-  const addToWatchlist = () => {};
+  // to be extracted!!!
+  const [isMovieFavorited, setIsMovieFavorited] = useState(false);
+  const [isMovieWatchlisted, setIsMovieWatchlisted] = useState(false);
 
-  const isMovieFavorited = false;
-  const isMovieWatchlisted = false;
+  const addToFavorites = async () => {
+    const url = `https://api.themoviedb.org/3/account/${user.id}/favorite`;
+    const options = {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+        Authorization: `Bearer ${tmdbAccessToken}`,
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        url,
+        {
+          media_type: "movie",
+          media_id: id,
+          favorite: !isMovieFavorited,
+        },
+        options,
+      );
+      setIsMovieFavorited((prev) => !prev);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const addToWatchlist = async () => {
+    const url = `https://api.themoviedb.org/3/account/${user.id}/watchlist`;
+    const options = {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+        Authorization: `Bearer ${tmdbAccessToken}`,
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        url,
+        {
+          media_type: "movie",
+          media_id: id,
+          watchlist: !isMovieWatchlisted,
+        },
+        options,
+      );
+      setIsMovieWatchlisted((prev) => !prev);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const { data, isFetching, error } = useGetMovieQuery(id);
   const { data: recommendations, isFetching: isRecommendationsFetching } =
     useGetRecommendationsQuery(id);
+  const { data: favoriteMovies } = useGetListQuery({
+    listName: "favorite/movies",
+    accountId: user.id,
+    page: 1,
+  });
+  const { data: watchlistMovies } = useGetListQuery({
+    listName: "watchlist/movies",
+    accountId: user.id,
+    page: 1,
+  });
 
-  const dispatch = useDispatch();
+  // to be refactored!
+  useEffect(() => {
+    setIsMovieFavorited(
+      favoriteMovies?.results.find((movie) => movie?.id === data?.id),
+    );
+  }, [favoriteMovies, data]);
+  useEffect(() => {
+    setIsMovieWatchlisted(
+      watchlistMovies?.results.find((movie) => movie?.id === data?.id),
+    );
+  }, [watchlistMovies, data]);
 
-  if (isFetching || isRecommendationsFetching) {
+  if (isFetching && isRecommendationsFetching) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center">
         <CircularProgress size="8rem" />
@@ -68,8 +151,8 @@ const MovieDetailPage = () => {
           <img
             className={classes.poster}
             src={
-              data.poster_path
-                ? `https://image.tmdb.org/t/p/w500/${data.poster_path}`
+              data?.poster_path
+                ? `https://image.tmdb.org/t/p/w500/${data?.poster_path}`
                 : "http://via.placeholder.com/200x300"
             }
             alt={data?.title}
@@ -93,7 +176,10 @@ const MovieDetailPage = () => {
           {/* Rating, Runtime, Language */}
           <Grid item container className={classes.containerSpaceAround}>
             <Box display="flex" justifyContent="center">
-              <Rating readOnly value={data.vote_average / 2} />
+              <Rating
+                readOnly
+                value={data?.vote_average ? data.vote_average / 2 : "none"}
+              />
               <Typography
                 variant="subtitle1"
                 gutterBottom
