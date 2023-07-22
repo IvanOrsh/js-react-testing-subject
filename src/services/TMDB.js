@@ -60,6 +60,26 @@ export const tmdbApi = createApi({
         },
       }),
     }),
+
+    // get actor
+    getActor: builder.query({
+      query: (actorId) => ({
+        url: `person/${actorId}`,
+        headers: {
+          Authorization: `Bearer ${tmdbAccessToken}`,
+        },
+      }),
+    }),
+
+    // get movie with given actor
+    getMoviesByActor: builder.query({
+      query: (actorId) => ({
+        url: `person/${actorId}/movie_credits`,
+        headers: {
+          Authorization: `Bearer ${tmdbAccessToken}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -68,4 +88,6 @@ export const {
   useGetGenresQuery,
   useGetMovieQuery,
   useGetRecommendationsQuery,
+  useGetActorQuery,
+  useGetMoviesByActorQuery,
 } = tmdbApi;
