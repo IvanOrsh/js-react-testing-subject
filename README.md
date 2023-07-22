@@ -1,3 +1,4 @@
 # React-Testing-Subject
 
-- The main goal of this project is to be a testing subject.
+- The project is (greatly) guided and inspired by [JSMastery course - Master React.js in an 8-Hour
+  Hands-On Course ](https://www.jsmastery.pro/ultimate-react-course)
