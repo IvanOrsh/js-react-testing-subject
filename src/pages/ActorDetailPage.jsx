@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   Grid,
@@ -12,11 +13,24 @@ import {
   TableRow,
   TableBody,
   TableCell,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
 } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import { ExpandableText, MovieList, ErrorGoBack } from "../components";
-import { useGetActorQuery, useGetMoviesByActorQuery } from "../services/TMDB";
+import {
+  ExpandableText,
+  MovieList,
+  ErrorGoBack,
+  Pagination,
+} from "../components";
+import {
+  useGetActorQuery,
+  useGetMoviesByActorQuery,
+  useGetMoviesByActorAltQuery,
+} from "../services/TMDB";
 import useStyle from "./ActorDetailPage.styles";
 
 const ActorDetailPage = () => {
@@ -25,11 +39,16 @@ const ActorDetailPage = () => {
 
   const { classes } = useStyle();
 
+  const [page, setPage] = useState(1);
   const { data, isFetching, error } = useGetActorQuery(id);
   const { data: moviesData, isFetching: isMoviesDataFetching } =
-    useGetMoviesByActorQuery(id);
+    useGetMoviesByActorQuery({ actorId: id, page });
 
-  if (isFetching && isMoviesDataFetching) {
+  // needs additional research - weird behavior! DANGER
+  const { data: moviesDataAlt, isFetching: isMoviesDataAltFetching } =
+    useGetMoviesByActorAltQuery(id);
+
+  if (isFetching && isMoviesDataFetching && isMoviesDataAltFetching) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center">
         <CircularProgress size="8rem" />
@@ -130,11 +149,39 @@ const ActorDetailPage = () => {
           Movies
         </Typography>
         {moviesData ? (
-          <MovieList movies={moviesData.cast} numberOfMovies={50} />
+          <MovieList movies={moviesData.results} numberOfMovies={20} />
         ) : (
           <Box>Sorry, nothing was found</Box>
         )}
+        <Pagination
+          currentPage={page}
+          setPage={setPage}
+          totalPages={moviesData?.total_pages}
+        />
       </Box>
+
+      {/* Movies with given Actor - Alt  */}
+      {/* This one MUST be hidden!!!! */}
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography variant="h4" gutterBottom align="center">
+            Alternative search - DANGER!
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box marginTop="5rem" width="100%">
+            {moviesDataAlt ? (
+              <MovieList movies={moviesDataAlt.cast} numberOfMovies={100} />
+            ) : (
+              <Box>Sorry, nothing was found</Box>
+            )}
+          </Box>
+        </AccordionDetails>
+      </Accordion>
     </>
   );
 };

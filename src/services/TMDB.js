@@ -71,8 +71,18 @@ export const tmdbApi = createApi({
       }),
     }),
 
-    // get movie with given actor
+    // discover! movie by actor id
     getMoviesByActor: builder.query({
+      query: ({ actorId, page }) => ({
+        url: `discover/movie?with_cast=${actorId}&page=${page}`,
+        headers: {
+          Authorization: `Bearer ${tmdbAccessToken}`,
+        },
+      }),
+    }),
+
+    // get movie with given actor - needs more research!
+    getMoviesByActorAlt: builder.query({
       query: (actorId) => ({
         url: `person/${actorId}/movie_credits`,
         headers: {
@@ -90,4 +100,5 @@ export const {
   useGetRecommendationsQuery,
   useGetActorQuery,
   useGetMoviesByActorQuery,
+  useGetMoviesByActorAltQuery,
 } = tmdbApi;

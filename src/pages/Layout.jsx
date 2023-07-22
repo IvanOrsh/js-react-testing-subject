@@ -15,6 +15,8 @@ const useStyles = makeStyles()(() => ({
   content: {
     flexGrow: "1",
     padding: "2em",
+    maxWidth: "1450px",
+    margin: "0 auto",
   },
 }));
 

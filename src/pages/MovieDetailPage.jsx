@@ -242,7 +242,7 @@ const MovieDetailPage = () => {
           You might also like
         </Typography>
         {recommendations ? (
-          <MovieList movies={recommendations.results} numberOfMovies={12} />
+          <MovieList movies={recommendations.results} numberOfMovies={20} />
         ) : (
           <Box>Sorry, nothing was found</Box>
         )}
