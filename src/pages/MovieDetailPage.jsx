@@ -155,7 +155,7 @@ const MovieDetailPage = () => {
                   xs={4}
                   md={2}
                   component={Link}
-                  to={`/actors/${actor.credit_id}`}
+                  to={`/actors/${actor.id}`}
                   style={{ textDecoration: "none" }}
                 >
                   <img
@@ -222,7 +222,7 @@ const MovieDetailPage = () => {
         </Button>
         <Button
           variant="outlined"
-          endIcon-={<ArrowBack />}
+          endIcon={<ArrowBack />}
           sx={{ borderColor: "primary.main" }}
         >
           <Typography
@@ -243,7 +243,7 @@ const MovieDetailPage = () => {
           You might also like
         </Typography>
         {recommendations ? (
-          <MovieList movies={recommendations} numberOfMovies={12} />
+          <MovieList movies={recommendations.results} numberOfMovies={12} />
         ) : (
           <Box>Sorry, nothing was found</Box>
         )}
