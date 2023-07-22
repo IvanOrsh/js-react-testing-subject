@@ -9,7 +9,6 @@ import {
   Paper,
   TableContainer,
   Table,
-  TableHead,
   TableRow,
   TableBody,
   TableCell,
@@ -84,25 +83,33 @@ const ActorDetailPage = () => {
           <Box marginBottom="2rem">
             <TableContainer component={Paper}>
               <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Born</TableCell>
-                    <TableCell>Died</TableCell>
-                    <TableCell>Place of Birth</TableCell>
-                    <TableCell>Gender</TableCell>
-                    <TableCell>Popularity</TableCell>
-                  </TableRow>
-                </TableHead>
                 <TableBody>
                   <TableRow>
+                    <TableCell>Born</TableCell>
                     <TableCell>{data?.birthday}</TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell>Died</TableCell>
                     <TableCell>
                       {data?.deathday ? data?.deathday : "no"}
                     </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell>Place of Birth</TableCell>
                     <TableCell>{data?.place_of_birth}</TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell>Gender</TableCell>
                     <TableCell>
                       {data?.gender === "1" ? "female" : "male"}
                     </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell>Popularity</TableCell>
                     <TableCell>{data?.popularity}</TableCell>
                   </TableRow>
                 </TableBody>
