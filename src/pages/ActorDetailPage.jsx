@@ -117,6 +117,7 @@ const ActorDetailPage = () => {
             color="inherit"
             variant="subtitle2"
             style={{ textDecoration: "none" }}
+            onClick={() => navigate(-1)}
           >
             Back
           </Typography>
