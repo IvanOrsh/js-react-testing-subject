@@ -18,17 +18,19 @@ import {
   Remove,
   ArrowBack,
 } from "@mui/icons-material";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { useGetMovieQuery, useGetRecommendationsQuery } from "../services/TMDB";
 import { selectGenreOrCategory } from "../features/currentGenreOrCategory";
-import { MovieList } from "../components";
+import { MovieList, ErrorGoBack } from "../components";
 import genreIcons from "../assets/genres";
 import useStyles from "./MovieDetailPage.styles";
 
 const MovieDetailPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const { classes } = useStyles();
 
   // modal trailer
@@ -55,11 +57,7 @@ const MovieDetailPage = () => {
   }
 
   if (error) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center">
-        <Link to="/">Something has gone wrong - Go back</Link>
-      </Box>
-    );
+    return <ErrorGoBack error={error} goBackHandler={() => navigate(-1)} />;
   }
 
   return (

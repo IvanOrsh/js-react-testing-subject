@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   Grid,
   Box,
@@ -15,13 +15,16 @@ import {
 } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 
-import { ExpandableText, MovieList } from "../components";
+import { ExpandableText, MovieList, ErrorGoBack } from "../components";
 import { useGetActorQuery, useGetMoviesByActorQuery } from "../services/TMDB";
 import useStyle from "./ActorDetailPage.styles";
 
 const ActorDetailPage = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
+
   const { classes } = useStyle();
+
   const { data, isFetching, error } = useGetActorQuery(id);
   const { data: moviesData, isFetching: isMoviesDataFetching } =
     useGetMoviesByActorQuery(id);
@@ -35,16 +38,12 @@ const ActorDetailPage = () => {
   }
 
   if (error) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center">
-        <Link to="/">Something has gone wrong - Go back</Link>
-      </Box>
-    );
+    return <ErrorGoBack error={error} goBackHandler={() => navigate(-1)} />;
   }
 
   return (
     <>
-      <Grid container className={classes.containerSpaceAround}>
+      <Grid spacing={2} container className={classes.containerSpaceAround}>
         {/* Actor Picture */}
         <Grid item container sm={12} lg={6}>
           <img
