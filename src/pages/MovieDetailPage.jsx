@@ -158,6 +158,7 @@ const MovieDetailPage = () => {
           </Grid>
 
           {/* Movie Overview  */}
+
           <Typography variant="h5" gutterBottom style={{ marginTop: "2rem" }}>
             Overview
           </Typography>

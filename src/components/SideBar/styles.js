@@ -12,11 +12,16 @@ export default makeStyles()((theme) => ({
   },
 
   links: {
-    color: theme.palette.primary,
+    color: theme.palette.primary.m,
     textDecoration: "none",
   },
 
   genreImage: {
-    filter: theme.palette.mode === "dark" ? "dark" : "invert(1)",
+    filter: theme.palette.mode === "dark" ? "invert(1)" : "",
+  },
+
+  button: {
+    color:
+      theme.palette.mode === "dark" ? theme.palette.primary.light : "invert(1)",
   },
 }));

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   AppBar,
   Toolbar,
@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../SideBar/SideBar";
 import Search from "../Search/Search";
 
+import { ColorModeContext } from "../../utils/ToggleColorMode";
 import { setUser, userSelector } from "../../features/auth";
 import { fetchToken, createSessionId, moviesApi } from "../../utils";
 
@@ -35,6 +36,9 @@ const NavBar = () => {
   // TODO: move auth logic from component!
   const { isAuthenticated, user } = useSelector(userSelector);
   const dispatch = useDispatch();
+
+  const { toggleColorMode } = useContext(ColorModeContext);
+
   const token = localStorage.getItem("request_token");
   const sessionIdFromLocalStorage = localStorage.getItem("session_id");
 
@@ -78,13 +82,8 @@ const NavBar = () => {
               <Menu />
             </IconButton>
           )}
-          <IconButton
-            color="inherit"
-            sx={{ ml: 1 }}
-            onClick={() => {
-              // placeholder
-            }}
-          >
+          {/* Theme Switcher */}
+          <IconButton color="inherit" sx={{ ml: 1 }} onClick={toggleColorMode}>
             {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
           {!isMobile && <Search />}
