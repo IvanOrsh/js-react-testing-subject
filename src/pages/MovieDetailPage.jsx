@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Typography,
   Button,
@@ -20,20 +20,18 @@ import {
 } from "@mui/icons-material";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 
 import {
   useGetMovieQuery,
   useGetRecommendationsQuery,
   useGetListQuery,
 } from "../services/TMDB";
+import useMovieInteraction from "../hooks/useMovieInteraction";
 import { selectGenreOrCategory } from "../features/currentGenreOrCategory";
 import { MovieList, ErrorGoBack } from "../components";
 import genreIcons from "../assets/genres";
 import useStyles from "./MovieDetailPage.styles";
 import { userSelector } from "../features/auth";
-
-const tmdbAccessToken = import.meta.env.VITE_APP_TMDB_ACCESS_TOKEN;
 
 const MovieDetailPage = () => {
   const dispatch = useDispatch();
@@ -46,65 +44,7 @@ const MovieDetailPage = () => {
   // modal trailer
   const [open, setOpen] = useState(false);
 
-  // to be extracted!!!
-  const [isMovieFavorited, setIsMovieFavorited] = useState(false);
-  const [isMovieWatchlisted, setIsMovieWatchlisted] = useState(false);
-
-  const addToFavorites = async () => {
-    const url = `https://api.themoviedb.org/3/account/${user.id}/favorite`;
-    const options = {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "content-type": "application/json",
-        Authorization: `Bearer ${tmdbAccessToken}`,
-      },
-    };
-
-    try {
-      const response = await axios.post(
-        url,
-        {
-          media_type: "movie",
-          media_id: id,
-          favorite: !isMovieFavorited,
-        },
-        options,
-      );
-      setIsMovieFavorited((prev) => !prev);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const addToWatchlist = async () => {
-    const url = `https://api.themoviedb.org/3/account/${user.id}/watchlist`;
-    const options = {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "content-type": "application/json",
-        Authorization: `Bearer ${tmdbAccessToken}`,
-      },
-    };
-
-    try {
-      const response = await axios.post(
-        url,
-        {
-          media_type: "movie",
-          media_id: id,
-          watchlist: !isMovieWatchlisted,
-        },
-        options,
-      );
-      setIsMovieWatchlisted((prev) => !prev);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+  // movies, recommendations, favorites & watch list
   const { data, isFetching, error } = useGetMovieQuery(id);
   const { data: recommendations, isFetching: isRecommendationsFetching } =
     useGetRecommendationsQuery(id);
@@ -119,17 +59,12 @@ const MovieDetailPage = () => {
     page: 1,
   });
 
-  // to be refactored!
-  useEffect(() => {
-    setIsMovieFavorited(
-      favoriteMovies?.results.find((movie) => movie?.id === data?.id),
-    );
-  }, [favoriteMovies, data]);
-  useEffect(() => {
-    setIsMovieWatchlisted(
-      watchlistMovies?.results.find((movie) => movie?.id === data?.id),
-    );
-  }, [watchlistMovies, data]);
+  const {
+    isMovieFavorited,
+    isMovieWatchlisted,
+    addToFavorites,
+    addToWatchlist,
+  } = useMovieInteraction(user, id, favoriteMovies, watchlistMovies);
 
   if (isFetching && isRecommendationsFetching) {
     return (
