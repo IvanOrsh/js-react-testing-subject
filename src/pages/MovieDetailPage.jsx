@@ -37,6 +37,7 @@ const MovieDetailPage = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(userSelector);
   const { id } = useParams();
+
   const navigate = useNavigate();
 
   const { classes } = useStyles();
@@ -113,7 +114,11 @@ const MovieDetailPage = () => {
             <Box display="flex" justifyContent="center">
               <Rating
                 readOnly
-                value={data?.vote_average ? data.vote_average / 2 : "none"}
+                value={
+                  data?.vote_average
+                    ? parseFloat(data.vote_average) / 2
+                    : "none"
+                }
               />
               <Typography
                 variant="subtitle1"
@@ -166,7 +171,7 @@ const MovieDetailPage = () => {
           </Typography>
           <Grid item container spacing={2}>
             {data &&
-              data.credits?.cast?.slice(0, 6).map((actor) => (
+              data.credits?.cast?.slice(0, 12).map((actor) => (
                 <Grid
                   item
                   container
