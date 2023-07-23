@@ -69,15 +69,13 @@ const useMovieInteraction = (
   };
 
   useEffect(() => {
-    // Check if the movie is in the user's favorite list
     const isFavorited = favoriteMovies?.results.find(
-      (movie) => movie?.id === movieId,
+      (movie) => movie?.id === parseInt(movieId, 10),
     );
     setIsMovieFavorited(!!isFavorited);
 
-    // Check if the movie is in the user's watchlist
     const isWatchlisted = watchlistMovies?.results.find(
-      (movie) => movie?.id === movieId,
+      (movie) => movie?.id === parseInt(movieId, 10),
     );
     setIsMovieWatchlisted(!!isWatchlisted);
   }, [user, movieId]);
