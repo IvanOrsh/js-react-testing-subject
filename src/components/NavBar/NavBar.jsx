@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import {
   AppBar,
   Toolbar,
@@ -16,14 +16,15 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import SideBar from "../SideBar/SideBar";
 import Search from "../Search/Search";
 
 import { ColorModeContext } from "../../utils/ToggleColorMode";
-import { setUser, userSelector } from "../../features/auth";
-import { fetchToken, createSessionId, moviesApi } from "../../utils";
+import { userSelector } from "../../features/auth";
+import { fetchToken } from "../../utils";
+import { useAuth } from "../../hooks/useAuth";
 
 import useStyles from "./styles";
 
@@ -34,36 +35,10 @@ const NavBar = () => {
   const theme = useTheme();
 
   // TODO: move auth logic from component!
-  const { isAuthenticated, user } = useSelector(userSelector);
-  const dispatch = useDispatch();
+  const { user } = useSelector(userSelector);
+  const { isAuthenticated } = useAuth();
 
   const { toggleColorMode } = useContext(ColorModeContext);
-
-  const token = localStorage.getItem("request_token");
-  const sessionIdFromLocalStorage = localStorage.getItem("session_id");
-
-  useEffect(() => {
-    const logInUser = async () => {
-      let userData;
-
-      if (token && sessionIdFromLocalStorage) {
-        const { data } = await moviesApi.get(
-          `/account?session_id=${sessionIdFromLocalStorage}`,
-        );
-        userData = data;
-      } else if (token) {
-        const sessionId = await createSessionId();
-        const { data } = await moviesApi.get(
-          `/account?session_id=${sessionId}`,
-        );
-        userData = data;
-      }
-
-      dispatch(setUser(userData));
-    };
-
-    logInUser();
-  }, [token]);
 
   return (
     <>
