@@ -1,8 +1,10 @@
+import { useRef } from "react";
 import { Outlet } from "react-router-dom";
 
 import { makeStyles } from "tss-react/mui";
 
 import { NavBar } from "../components";
+import useAlan from "../hooks/useAlan";
 
 const useStyles = makeStyles()(() => ({
   root: {
@@ -22,6 +24,8 @@ const useStyles = makeStyles()(() => ({
 
 const Layout = () => {
   const { classes } = useStyles();
+  const alanBtnContainer = useRef();
+  useAlan();
   return (
     <div className={classes.root}>
       <NavBar />
@@ -29,6 +33,7 @@ const Layout = () => {
         <div className={classes.toolbar} />
         <Outlet />
       </main>
+      <div ref={alanBtnContainer} />
     </div>
   );
 };
