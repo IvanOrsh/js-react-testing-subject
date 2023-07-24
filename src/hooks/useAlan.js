@@ -56,6 +56,7 @@ const useAlan = () => {
         }
 
         if (commandData && commandData.command === "search") {
+          navigate("/");
           dispatch(searchMovie(commandData.query));
         }
       },
