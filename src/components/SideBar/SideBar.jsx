@@ -59,7 +59,10 @@ const SideBar = ({ setMobileOpen }) => {
           <Link key={value} className={classes.links} to="/">
             <ListItemButton
               className={classes.button}
-              onClick={() => dispatch(selectGenreOrCategory(value))}
+              onClick={() => {
+                dispatch(selectGenreOrCategory(value));
+                setMobileOpen((prev) => !prev);
+              }}
             >
               <ListItemIcon>
                 <img
@@ -85,7 +88,10 @@ const SideBar = ({ setMobileOpen }) => {
             <Link key={id} className={classes.links} to="/">
               <ListItemButton
                 className={classes.button}
-                onClick={() => dispatch(selectGenreOrCategory(id))}
+                onClick={() => {
+                  dispatch(selectGenreOrCategory(id));
+                  setMobileOpen((prev) => !prev);
+                }}
               >
                 <ListItemIcon>
                   <img
