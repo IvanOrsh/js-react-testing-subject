@@ -30,6 +30,7 @@ import {
   useGetMoviesByActorQuery,
   useGetMoviesByActorAltQuery,
 } from "../services/TMDB";
+import Movie from "../components/MovieList/Movie/Movie";
 import useStyle from "./ActorDetailPage.styles";
 
 const ActorDetailPage = () => {
@@ -175,14 +176,16 @@ const ActorDetailPage = () => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography variant="h4" gutterBottom align="center">
+          <Typography variant="h6" gutterBottom align="center">
             Alternative search - DANGER!
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Box marginTop="5rem" width="100%">
+          <Box display="flex" flexWrap="wrap">
             {moviesDataAlt ? (
-              <MovieList movies={moviesDataAlt.cast} numberOfMovies={100} />
+              moviesDataAlt.cast.map((movie, i) => (
+                <Movie key={movie.id} movie={movie} i={i} />
+              ))
             ) : (
               <Box>Sorry, nothing was found</Box>
             )}
