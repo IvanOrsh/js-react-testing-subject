@@ -15,7 +15,7 @@ export default makeStyles()((theme) => ({
   poster: {
     margin: "0 auto",
     borderRadius: "20px",
-    boxShadow: "0.5em 1em 1em rgb(64, 64, 70)",
+    boxShadow: "0.5em 0.5em 0.5em rgb(64, 64, 70)",
     marginBottom: "2rem",
     maxHeight: "600px",
 
@@ -61,8 +61,8 @@ export default makeStyles()((theme) => ({
     display: "flex",
     width: "100%",
     wrap: "wrap",
-    justifyContent: "center",
-    [theme.breakpoints.down("md")]: {
+    justifyContent: "space-even",
+    [theme.breakpoints.down("lg")]: {
       flexDirection: "column",
     },
   },

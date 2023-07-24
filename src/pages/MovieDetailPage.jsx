@@ -18,6 +18,7 @@ import {
   Remove,
   ArrowBack,
 } from "@mui/icons-material";
+
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -28,7 +29,7 @@ import {
 } from "../services/TMDB";
 import useMovieInteraction from "../hooks/useMovieInteraction";
 import { selectGenreOrCategory } from "../features/currentGenreOrCategory";
-import { MovieList, ErrorGoBack } from "../components";
+import { ErrorGoBack, CastAccordion, MoviesAccordion } from "../components";
 import genreIcons from "../assets/genres";
 import useStyles from "./MovieDetailPage.styles";
 import { userSelector } from "../features/auth";
@@ -97,7 +98,12 @@ const MovieDetailPage = () => {
 
         {/* Movie Info */}
         <Grid item container direction="column" lg={6}>
-          <Typography variant="h4" align="center" gutterBottom>
+          <Typography
+            variant="h4"
+            align="center"
+            gutterBottom
+            style={{ marginTop: "1rem" }}
+          >
             {data?.title} ({data?.release_date.split("-")[0]})
           </Typography>
           <Typography
@@ -114,11 +120,7 @@ const MovieDetailPage = () => {
             <Box display="flex" justifyContent="center">
               <Rating
                 readOnly
-                value={
-                  data?.vote_average
-                    ? parseFloat(data.vote_average) / 2
-                    : "none"
-                }
+                value={data?.vote_average ? data.vote_average / 2 : 0}
               />
               <Typography
                 variant="subtitle1"
@@ -166,114 +168,103 @@ const MovieDetailPage = () => {
             {data?.overview}
           </Typography>
 
-          {/* Movie Cast */}
-          <Typography variant="h5" gutterBottom>
-            Top Cast{" "}
-          </Typography>
-          <Grid item container spacing={2}>
-            {data &&
-              data.credits?.cast?.slice(0, 12).map((actor) => (
-                <Grid
-                  item
-                  container
-                  key={actor.id}
-                  xs={4}
-                  md={2}
-                  component={Link}
-                  to={`/actors/${actor.id}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <img
-                    className={classes.castImage}
-                    src={
-                      actor.profile_path
-                        ? `https://image.tmdb.org/t/p/w500/${actor.profile_path}`
-                        : "http://via.placeholder.com/200x300"
-                    }
-                    alt={actor.name}
-                  />
-                  <Typography color="textPrimary">{actor?.name}</Typography>
-                  <Typography color="textSecondary">
-                    {actor?.character.split("/")[0]}
-                  </Typography>
-                </Grid>
-              ))}
+          {/* Buttons TODO: refactor */}
+          <Grid container item className={classes.buttonsContainer}>
+            <Button
+              variant="outlined"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={data?.homepage}
+              endIcon={<Language />}
+            >
+              Website
+            </Button>
+            <Button
+              variant="outlined"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`https://www.imdb.com/title/${data?.imdb_id}`}
+              endIcon={<MovieIcon />}
+            >
+              IMDB
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => setOpen(true)}
+              href="#"
+              endIcon={<Theaters />}
+            >
+              Trailer
+            </Button>
+
+            <Button
+              variant="outlined"
+              onClick={addToFavorites}
+              endIcon={
+                isMovieFavorited ? <FavoriteBorderOutlined /> : <Favorite />
+              }
+            >
+              {isMovieFavorited ? "Unfavorite" : "Favorite"}
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={addToWatchlist}
+              endIcon={isMovieWatchlisted ? <Remove /> : <PlusOne />}
+            >
+              Watchlist
+            </Button>
+            <Button
+              variant="outlined"
+              endIcon={<ArrowBack />}
+              sx={{ borderColor: "primary.main" }}
+            >
+              <Typography
+                component={Link}
+                to="/"
+                color="inherit"
+                variant="subtitle2"
+                style={{ textDecoration: "none" }}
+                onClick={() => navigate(-1)}
+              >
+                Back
+              </Typography>
+            </Button>
           </Grid>
         </Grid>
+
+        {/* Movie Cast */}
+        {data.credits?.cast && (
+          <CastAccordion
+            title="Top Cast"
+            cast={data.credits?.cast.slice(0, 12)}
+          />
+        )}
+
+        {/* Crew Cast */}
+        {data.credits?.crew && (
+          <CastAccordion
+            title="Crew"
+            cast={data.credits?.crew
+              ?.filter((person) =>
+                [
+                  "director",
+                  "producer",
+                  "executive producer",
+                  "screenplay",
+                ].includes(person.job.toLowerCase()),
+              )
+              .slice(0, 12)}
+          />
+        )}
       </Grid>
 
-      {/* Buttons TODO: refactor */}
-      <Box className={classes.buttonsContainer}>
-        <Button
-          variant="outlined"
-          target="_blank"
-          rel="noopener noreferrer"
-          href={data?.homepage}
-          endIcon={<Language />}
-        >
-          Website
-        </Button>
-        <Button
-          variant="outlined"
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`https://www.imdb.com/title/${data?.imdb_id}`}
-          endIcon={<MovieIcon />}
-        >
-          IMDB
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={() => setOpen(true)}
-          href="#"
-          endIcon={<Theaters />}
-        >
-          Trailer
-        </Button>
-
-        <Button
-          variant="outlined"
-          onClick={addToFavorites}
-          endIcon={isMovieFavorited ? <FavoriteBorderOutlined /> : <Favorite />}
-        >
-          {isMovieFavorited ? "Unfavorite" : "Favorite"}
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={addToWatchlist}
-          endIcon={isMovieWatchlisted ? <Remove /> : <PlusOne />}
-        >
-          Watchlist
-        </Button>
-        <Button
-          variant="outlined"
-          endIcon={<ArrowBack />}
-          sx={{ borderColor: "primary.main" }}
-        >
-          <Typography
-            component={Link}
-            to="/"
-            color="inherit"
-            variant="subtitle2"
-            style={{ textDecoration: "none" }}
-            onClick={() => navigate(-1)}
-          >
-            Back
-          </Typography>
-        </Button>
-      </Box>
-
       {/* Recommendations */}
-      <Box marginTop="5rem" width="100%">
-        <Typography variant="h4" gutterBottom align="center">
-          You might also like
-        </Typography>
-        {recommendations ? (
-          <MovieList movies={recommendations.results} numberOfMovies={20} />
-        ) : (
-          <Box>Sorry, nothing was found</Box>
-        )}
-      </Box>
+      {recommendations?.results.length > 0 && (
+        <MoviesAccordion
+          title="You might also like"
+          movies={recommendations.results}
+        />
+      )}
 
       {/* Trailer Modal */}
       <Modal
