@@ -7,6 +7,7 @@ import { ExitToApp } from "@mui/icons-material";
 import { userSelector } from "../features/auth";
 import { useGetListQuery } from "../services/TMDB";
 import { ErrorGoBack, RatedCards } from "../components";
+import { logout } from "../hooks/useAuth";
 
 const ProfilePage = () => {
   const { user } = useSelector(userSelector);
@@ -37,12 +38,6 @@ const ProfilePage = () => {
     refetchFavoriteMovies();
     refetchWatchlistMovies();
   }, []);
-
-  const logout = () => {
-    localStorage.clear();
-
-    window.location.href = "/";
-  };
 
   if (isFavoriteMoviesFetching && isWatchlistMoviesFetching) {
     return (
