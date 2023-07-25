@@ -3,7 +3,7 @@ import { makeStyles } from "tss-react/mui";
 export default makeStyles()((theme) => ({
   containerSpaceAround: {
     display: "flex",
-    alignItems: "start",
+    alignItems: "center",
     justifyContent: "space-around",
     margin: "px 0 !important",
     [theme.breakpoints.down("sm")]: {
