@@ -8,3 +8,4 @@ export { default as Pagination } from "./Pagination/Pagination";
 export { default as RatedCards } from "./RatedCards/RatedCards";
 export { default as CastAccordion } from "./Accordions/CastAccordion/CastAccordion";
 export { default as MoviesAccordion } from "./Accordions/MoviesAccordion/MoviesAccordion";
+export { default as FeaturedMovie } from "./FeaturedMovie/FeaturedMovie";
