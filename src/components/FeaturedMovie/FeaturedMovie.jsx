@@ -31,11 +31,14 @@ const FeaturedMovie = ({ movie }) => {
             className={classes.cardContent}
             classes={{ root: classes.cardContentRoot }}
           >
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h5" className={classes.title} gutterBottom>
               {movie.title}
             </Typography>
-            <Typography variant="body2" gutterBottom>
-              {movie.overview}
+            <Typography variant="body2" className={classes.info}>
+              Release Date: {new Date(movie.release_date).toLocaleDateString()}
+            </Typography>
+            <Typography variant="body2" className={classes.info}>
+              Vote Average: {movie.vote_average}
             </Typography>
           </CardContent>
         </Box>
