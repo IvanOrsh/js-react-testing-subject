@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Button, Typography } from "@mui/material";
 
-const ExpandableText = ({ children }) => {
+const ExpandableText = ({ children, limit = 300 }) => {
   const [expanded, setExpanded] = useState(false);
-  const limit = 300;
 
   if (!children) return null;
 
