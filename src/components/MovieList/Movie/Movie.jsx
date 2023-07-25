@@ -36,7 +36,7 @@ const Movie = ({ movie, i }) => {
               Original Language: {movie.original_language}
             </Typography>
             <Typography variant="body2" className={classes.info}>
-              Release Date: {movie.release_date}
+              Release Date: {new Date(movie.release_date).toLocaleDateString()}
             </Typography>
             <Typography variant="body2" className={classes.info}>
               Vote Average: {movie.vote_average}
