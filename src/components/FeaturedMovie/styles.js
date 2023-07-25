@@ -40,6 +40,28 @@ export default makeStyles()((theme) => ({
 
   cardContentRoot: {
     position: "relative",
-    backgroundColor: "transparent",
+    backgroundColor: "rgba(0,0,0,0.75)",
+    backgroundBlendMode: "darken",
+  },
+
+  title: {
+    color:
+      theme.palette.mode === "light"
+        ? theme.palette.primary.light
+        : "invert(1)",
+    textOverflow: "ellipsis",
+    width: "230px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    marginTop: "10px",
+    marginBottom: "5px",
+    textAlign: "left",
+  },
+
+  info: {
+    color:
+      theme.palette.mode === "dark"
+        ? theme.palette.secondary.main
+        : theme.palette.common.white,
   },
 }));
