@@ -2,6 +2,7 @@ import { makeStyles } from "tss-react/mui";
 
 export default makeStyles()((theme) => ({
   root: {
+    width: "300px",
     position: "relative",
     transition: "transform 0.4s",
     marginBottom: "10px",
@@ -9,12 +10,19 @@ export default makeStyles()((theme) => ({
       transform: "scale(1.05)",
     },
 
+    [theme.breakpoints.down("md")]: {
+      width: "260px",
+    },
     [theme.breakpoints.down("sm")]: {
-      width: "250px",
+      width: "240px",
     },
   },
   media: {
     height: "360px",
+    transition: "transform 0.4s",
+    "&:hover": {
+      transform: "scale(1.05)",
+    },
   },
 
   infoContainer: {
@@ -28,7 +36,10 @@ export default makeStyles()((theme) => ({
         ? theme.palette.secondary
         : theme.palette.primary.contrastText,
     padding: theme.spacing(2),
-    transition: "bottom 0.2s",
+    transition: "transform 0.4s",
+    "&:hover": {
+      transform: "scale(1.05)",
+    },
   },
 
   info: {

@@ -14,9 +14,12 @@ const Movie = ({ movie, i }) => {
   const navigate = useNavigate();
 
   return (
-    <Grow style={{ borderRadius: "5px" }} in key={i} timeout={(i + 1) * 250}>
-      <Card onClick={() => navigate(`/movie/${movie.id}`)}>
-        <CardActionArea className={classes.root}>
+    <Grow style={{ borderRadius: "10px" }} in key={i} timeout={(i + 1) * 250}>
+      <Card
+        classes={{ root: classes.root }}
+        onClick={() => navigate(`/movie/${movie.id}`)}
+      >
+        <CardActionArea>
           <CardMedia
             component="img"
             alt={movie.original_title}
