@@ -7,10 +7,13 @@ export default makeStyles()((theme) => ({
     justifyContent: "space-between",
     flexWrap: "wrap",
     overflow: "auto",
-    [theme.breakpoints.down("md")]: {
-      justifyContent: "start",
+    [theme.breakpoints.down("lg")]: {
+      justifyContent: "space-between",
       alignItems: "center",
-      flexDirection: "column",
+    },
+    [theme.breakpoints.down("md")]: {
+      justifyContent: "space-around",
+      alignItems: "center",
     },
   },
 }));

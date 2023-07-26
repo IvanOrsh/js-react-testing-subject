@@ -12,25 +12,15 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
 } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
 import {
   ExpandableText,
   MovieList,
   ErrorGoBack,
   Pagination,
 } from "../components";
-import {
-  useGetActorQuery,
-  useGetMoviesByActorQuery,
-  useGetMoviesByActorAltQuery,
-} from "../services/TMDB";
-import Movie from "../components/MovieList/Movie/Movie";
+import { useGetActorQuery, useGetMoviesByActorQuery } from "../services/TMDB";
 import useStyle from "./ActorDetailPage.styles";
 
 const ActorDetailPage = () => {
@@ -44,11 +34,7 @@ const ActorDetailPage = () => {
   const { data: moviesData, isFetching: isMoviesDataFetching } =
     useGetMoviesByActorQuery({ actorId: id, page });
 
-  // needs additional research - weird behavior! DANGER
-  const { data: moviesDataAlt, isFetching: isMoviesDataAltFetching } =
-    useGetMoviesByActorAltQuery(id);
-
-  if (isFetching && isMoviesDataFetching && isMoviesDataAltFetching) {
+  if (isFetching && isMoviesDataFetching) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center">
         <CircularProgress size="8rem" />
@@ -167,31 +153,6 @@ const ActorDetailPage = () => {
           totalPages={moviesData?.total_pages}
         />
       </Box>
-
-      {/* Movies with given Actor - Alt  */}
-      {/* This one MUST be hidden!!!! */}
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography variant="h6" gutterBottom align="center">
-            Alternative search - DANGER!
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Box display="flex" flexWrap="wrap">
-            {moviesDataAlt ? (
-              moviesDataAlt.cast.map((movie, i) => (
-                <Movie key={movie.id} movie={movie} i={i} />
-              ))
-            ) : (
-              <Box>Sorry, nothing was found</Box>
-            )}
-          </Box>
-        </AccordionDetails>
-      </Accordion>
     </>
   );
 };

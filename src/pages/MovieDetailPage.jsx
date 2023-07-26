@@ -233,7 +233,7 @@ const MovieDetailPage = () => {
         </Grid>
 
         {/* Movie Cast */}
-        {data.credits?.cast && (
+        {data?.credits?.cast && (
           <CastAccordion
             title="Top Cast"
             cast={data.credits?.cast.slice(0, 12)}
@@ -241,7 +241,7 @@ const MovieDetailPage = () => {
         )}
 
         {/* Crew Cast */}
-        {data.credits?.crew && (
+        {data?.credits?.crew && (
           <CastAccordion
             title="Crew"
             cast={data.credits?.crew
@@ -267,27 +267,29 @@ const MovieDetailPage = () => {
       )}
 
       {/* Trailer Modal */}
-      <Modal
-        closeAfterTransition
-        className={classes.modal}
-        open={open}
-        onClose={() => setOpen(false)}
-      >
-        {data?.videos?.results && (
-          <iframe
-            autoPlay
-            className={classes.videos}
-            frameBorder="0"
-            title="Trailer"
-            src={
-              data.videos.results.length > 0
-                ? `https://www.youtube.com/embed/${data.videos.results[0].key}`
-                : "https://www.youtube.com"
-            }
-            allow="autoplay"
-          />
-        )}
-      </Modal>
+      {data?.videos?.results && (
+        <Modal
+          closeAfterTransition
+          className={classes.modal}
+          open={open}
+          onClose={() => setOpen(false)}
+        >
+          {data?.videos?.results && (
+            <iframe
+              autoPlay
+              className={classes.videos}
+              frameBorder="0"
+              title="Trailer"
+              src={
+                data.videos.results.length > 0
+                  ? `https://www.youtube.com/embed/${data.videos.results[0].key}`
+                  : "https://www.youtube.com"
+              }
+              allow="autoplay"
+            />
+          )}
+        </Modal>
+      )}
     </>
   );
 };

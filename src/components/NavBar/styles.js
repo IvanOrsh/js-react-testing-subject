@@ -1,13 +1,13 @@
 import { makeStyles } from "tss-react/mui";
 
-const drawerWidth = 240;
+const drawerWidth = 230;
 
 export default makeStyles()((theme) => ({
   toolbar: {
     height: "80px",
     display: "flex",
     justifyContent: "space-between",
-    marginLeft: "240px",
+    marginLeft: "230px",
     // mobile
     [theme.breakpoints.down("sm")]: {
       marginLeft: 0,
