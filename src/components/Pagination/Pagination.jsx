@@ -28,8 +28,8 @@ const Pagination = ({ currentPage, setPage, totalPages }) => {
       >
         Prev
       </Button>
-      <Typography variant="h4" className={classes.pageNumber}>
-        {currentPage}
+      <Typography variant="h6" className={classes.pageNumber}>
+        {currentPage} / {totalPages}
       </Typography>
       <Button
         onClick={handleNext}
