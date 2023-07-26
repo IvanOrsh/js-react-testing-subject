@@ -26,8 +26,10 @@ export default makeStyles()((theme) => ({
     right: 0,
     height: "100%",
     width: "100%",
-    backgroundColor: "rgba(0,0,0,0.575)",
-    backgroundBlendMode: "darken",
+    transition: "transform 0.4s",
+    "&:hover": {
+      transform: "scale(1.05)",
+    },
   },
 
   cardContent: {
@@ -35,6 +37,10 @@ export default makeStyles()((theme) => ({
     width: "40%",
     [theme.breakpoints.down("sm")]: {
       width: "100%",
+    },
+    transition: "transform 0.4s",
+    "&:hover": {
+      transform: "scale(1.05)",
     },
   },
 
@@ -50,7 +56,6 @@ export default makeStyles()((theme) => ({
         ? theme.palette.primary.light
         : "invert(1)",
     textOverflow: "ellipsis",
-    width: "230px",
     whiteSpace: "nowrap",
     overflow: "hidden",
     marginTop: "10px",

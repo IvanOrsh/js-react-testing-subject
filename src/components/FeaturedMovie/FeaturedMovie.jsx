@@ -21,7 +21,7 @@ const FeaturedMovie = ({ movie }) => {
           alt={movie.original_title}
           image={
             movie.backdrop_path
-              ? `https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}`
+              ? `https://image.tmdb.org/t/p/w1280/${movie?.backdrop_path}`
               : "http://via.placeholder.com/200x300"
           }
           title={movie.original_title}
